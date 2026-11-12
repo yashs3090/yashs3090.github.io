@@ -1,0 +1,652 @@
+@import './tokens.css';
+
+/* ---------- reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ---------- base ---------- */
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  line-height: var(--leading-tight);
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+h1 {
+  font-size: var(--text-3xl);
+}
+h2 {
+  font-size: var(--text-2xl);
+}
+h3 {
+  font-size: var(--text-lg);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* Visible, consistent focus ring for keyboard users. Never remove this
+   without providing an equivalent — it is the only affordance keyboard
+   navigation has. */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- layout primitives ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+}
+
+.section {
+  padding-block: var(--space-8);
+  border-bottom: var(--border-thin);
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.section__title {
+  margin-bottom: var(--space-4);
+}
+
+/* ---------- skip link ---------- */
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-2);
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  color: var(--color-accent-contrast);
+}
+
+/* ---------- header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: var(--border-thin);
+  background-color: color-mix(in srgb, var(--color-bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 3.75rem;
+}
+
+.site-header__brand {
+  color: var(--color-text);
+  font-size: var(--text-base);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.site-nav__list {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.site-nav__link {
+  display: inline-block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: 550;
+  text-decoration: none;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.site-nav__link:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.site-nav__link[aria-current='page'] {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+/* ---------- footer ---------- */
+.site-footer {
+  border-top: var(--border-thin);
+  padding-block: var(--space-5);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* ---------- placeholder (Phase 1 only — delete as sections are built) ---------- */
+.placeholder {
+  padding: var(--space-5);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* ---------- motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.site-footer__links {
+  display: flex;
+  gap: var(--space-4);
+}
+
+/* ---------- utilities ---------- */
+
+/*
+ * Visible to screen readers, invisible on screen. Used for the text labels on
+ * the icon-only theme toggle. Does NOT use display:none or visibility:hidden —
+ * both remove the element from the accessibility tree, defeating the purpose.
+ */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- buttons ---------- */
+.button {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-thin);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.button:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-text-muted);
+}
+
+.button--primary {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.button--primary:hover {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: var(--color-accent-contrast);
+}
+
+/* ---------- header layout ---------- */
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+/* ---------- theme toggle ---------- */
+.theme-toggle {
+  display: inline-flex;
+  padding: 2px;
+  border: var(--border-thin);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-subtle);
+}
+
+.theme-toggle__option {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.theme-toggle__option:hover {
+  color: var(--color-text);
+}
+
+/* aria-checked is the state, so it is also the styling hook — the visual and
+   the accessible state cannot drift apart this way. */
+.theme-toggle__option[aria-checked='true'] {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+}
+
+/* ---------- section variants ---------- */
+.section--tight {
+  padding-block: var(--space-8) var(--space-5);
+}
+
+.section--subtle {
+  background-color: var(--color-bg-subtle);
+  border-block: var(--border-thin);
+}
+
+/* ---------- landing (intentionally sparse — see docs/decisions/0007) ---------- */
+.landing {
+  display: grid;
+  place-items: center;
+  /* Fills the viewport minus header and footer so the sparse page reads as
+     deliberate rather than unfinished. */
+  min-height: clamp(20rem, 68vh, 44rem);
+  padding-block: var(--space-10);
+}
+
+.landing__inner {
+  text-align: center;
+}
+
+.landing__name {
+  margin: 0;
+  font-size: var(--text-4xl);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.02em;
+}
+
+.landing__title {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+}
+
+.landing__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.landing__socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+/* ---------- resume header ---------- */
+.resume__lede {
+  max-width: 48ch;
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+}
+
+.resume__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.resume__download {
+  margin-top: var(--space-5);
+}
+
+/* ---------- experience timeline ---------- */
+.timeline {
+  display: grid;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.role__head {
+  margin-bottom: var(--space-3);
+}
+
+.role__title {
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: var(--leading-tight);
+}
+
+.role__at {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.role__company {
+  color: var(--color-accent);
+}
+
+.role__meta {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.role__highlights {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding-left: var(--space-5);
+  max-width: 78ch;
+}
+
+.role__highlights li {
+  line-height: var(--leading-normal);
+}
+
+/* ---------- chips ---------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 2px var(--space-2);
+  border: var(--border-thin);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.chips--lead {
+  margin-top: 0;
+  margin-bottom: var(--space-6);
+}
+
+.chip--strong {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: var(--space-1) var(--space-3);
+}
+
+/* ---------- skills ---------- */
+.skill-grid {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.skill-grid__label {
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.skill-grid__items {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+@media (min-width: 40rem) {
+  .skill-grid__group {
+    display: grid;
+    grid-template-columns: 12rem 1fr;
+    gap: var(--space-4);
+    align-items: baseline;
+  }
+
+  .skill-grid__items {
+    margin-top: 0;
+  }
+}
+
+/* ---------- projects ---------- */
+.project-grid {
+  display: grid;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 48rem) {
+  .project-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.project {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-5);
+  border: var(--border-thin);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.project__title {
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: var(--leading-tight);
+}
+
+.project__year {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.project__summary {
+  margin: var(--space-3) 0 0;
+  line-height: var(--leading-normal);
+}
+
+.project__highlights {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding-left: var(--space-5);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+/* Pins tech chips and the repo link to the card bottom so cards of differing
+   text length still align along their footer. */
+.project .chips {
+  margin-top: auto;
+  padding-top: var(--space-4);
+}
+
+.project__links {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+}
+
+.project-grid__other {
+  margin-top: var(--space-5);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* ---------- education ---------- */
+.education__school {
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: var(--leading-tight);
+}
+
+.education__degree {
+  margin: var(--space-2) 0 0;
+}
+
+.education__meta {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.education__coursework {
+  margin: var(--space-4) 0 0;
+  max-width: 70ch;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.education__coursework-label {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* ---------- print (Cmd-P on /resume) ---------- */
+@media print {
+  .site-header,
+  .site-footer,
+  .skip-link,
+  .theme-toggle,
+  .resume__download {
+    display: none;
+  }
+
+  .section,
+  .section--tight,
+  .section--subtle {
+    padding-block: var(--space-4);
+    background-color: transparent;
+    border: 0;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project,
+  .role {
+    break-inside: avoid;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
