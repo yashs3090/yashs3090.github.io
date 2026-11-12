@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Phase 3 adds the full metadata set here: description, Open Graph and
+         Twitter card tags, og:image, favicon, robots. The link preview is
+         often the actual first impression (LinkedIn, Slack), so it is not
+         cosmetic. -->
+    <title>Yash Saraiya — Software Engineer</title>
+
+    <!-- Applies the saved theme before first paint. Without this, the page
+         renders in the system theme and then snaps to the saved override on
+         hydration — a visible flash. Must stay inline, must stay before the
+         stylesheet, and the storage key must match src/lib/theme.ts. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t === 'light' || t === 'dark') {
+            document.documentElement.setAttribute('data-theme', t);
+          }
+        } catch (e) {
+          /* storage blocked — fall through to prefers-color-scheme */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
