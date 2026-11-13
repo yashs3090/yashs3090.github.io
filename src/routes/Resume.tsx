@@ -42,12 +42,19 @@ export function Resume() {
               </li>
             ))}
           </ul>
-          {/* Phase 3: drop resume.pdf into public/ and this link goes live. */}
-          <p className="resume__download">
-            <a className="button" href="/resume.pdf" download>
-              Download PDF
-            </a>
-          </p>
+          {/* Rendered only when site.resumePdfUrl is set — see the comment on
+              that field for why a missing PDF cannot be linked optimistically. */}
+          {site.resumePdfUrl ? (
+            <p className="resume__download">
+              <a
+                className="button button--primary"
+                href={site.resumePdfUrl}
+                download={site.resumePdfDownloadName}
+              >
+                Download PDF
+              </a>
+            </p>
+          ) : null}
         </div>
       </section>
 
