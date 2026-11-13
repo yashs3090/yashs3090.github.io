@@ -42,6 +42,13 @@ Use `BrowserRouter` (clean paths), which this makes safe.
   SEO wart on non-root routes. Acceptable at this size.
 - Genuinely-unknown paths (`/nonsense`) also boot the app, so the app needs its own NotFound
   route. It has one.
+- **Missing static assets return HTML, not a clean 404.** This is the fallback's sharpest
+  edge. A request for a file that does not exist — `/resume.pdf`, an `og:image`, a favicon —
+  gets `404.html`, which is the app's HTML, served as `text/html`. A `<a download>` link will
+  cheerfully save that HTML under the requested filename, producing a "PDF" that will not
+  open. This already happened once with the resume download. Anything linked as a static
+  file must be gated on the file actually existing (see `site.resumePdfUrl`), because the
+  platform will not tell you it is missing.
 - The copy must happen after `vite build` and before artifact upload. Order matters.
 
 ## Alternatives considered
